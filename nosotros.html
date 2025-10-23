@@ -4,18 +4,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FerreTech Store - Herramientas de Confianza</title>
+    <title>Nosotros - FerreTech Store</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/nosotros.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
+    <!-- Mismo header que en index.html -->
     <div class="top-banner">
         <p>ENVÍOS NACIONALES GRATIS</p>
     </div>
     <header class="header">
         <div class="container">
             <div class="logo">
-                <h1>FerreTech <span>Store</span></h1>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>FerreTech <span>Store</span></h1>
+                </a>
             </div>
 
             <nav class="nav-icons">
@@ -50,7 +55,7 @@
                     </svg>
                 </button>
 
-                <button class="icon-btn menu-btn" aria-label="Menú">
+                <button class="icon-btn menu-btn" aria-label="Menú" onclick="toggleSidebar()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -60,65 +65,53 @@
             </nav>
         </div>
     </header>
-    <section class="hero">
-        <div class="hero-overlay"></div>
-        <img src="img/fondoferetech.jpg"
-            alt="Herramientas de ferretería" class="hero-image" />
-        <div class="hero-content">
-            <h2 class="hero-title">HERRAMIENTAS DE<br />CONFIANZA</h2>
-            <p class="hero-subtitle">DESCUBRE NUESTRAS NOVEDADES</p>
-            <button class="hero-btn">COMPRAR</button>
-        </div>
-    </section>
-    <section id="inicio" class="products-section page-section">
-        <div class="container">
-            <h2 class="section-title">Nuestros Productos</h2>
-            <div class="products-grid" id="productsGrid">
-            </div>
-            <div class="pagination">
-                <button id="prevPage" class="pagination-btn" disabled>Anterior</button>
-                <div id="pageNumbers" class="page-numbers"></div>
-                <button id="nextPage" class="pagination-btn">Siguiente</button>
-            </div>
-        </div>
-    </section>
 
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3>Carrito de Compras</h3>
-            <button class="close-cart" onclick="toggleCart()">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <p class="empty-cart">Tu carrito está vacío</p>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">$0.00</span>
-            </div>
-            <button class="checkout-btn">Finalizar Compra</button>
-        </div>
-    </div>
-
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-
-    <!-- Sidebar Menu -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h3>Menú</h3>
             <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
         </div>
         <nav class="sidebar-nav">
-            <a href="#" class="sidebar-link" onclick="showSection('inicio', event)">Inicio</a>
-            <a href="#" class="sidebar-link" onclick="showSection('productos', event)">Productos</a>
-            <a href="#" class="sidebar-link" onclick="showSection('categorias', event)">Categorías</a>
-            <a href="#" class="sidebar-link" onclick="showSection('ofertas', event)">Ofertas</a>
-            <a href="nosotros.html" class="sidebar-link">Nosotros</a>
-            <a href="#" class="sidebar-link" onclick="showSection('contacto', event)">Contacto</a>
+            <a href="index.html" class="sidebar-link">Inicio</a>
+            <a href="#" class="sidebar-link">Productos</a>
+            <a href="#" class="sidebar-link">Categorías</a>
+            <a href="#" class="sidebar-link">Ofertas</a>
+            <a href="nosotros.html" class="sidebar-link active">Nosotros</a>
+            <a href="#" class="sidebar-link">Contacto</a>
         </nav>
     </div>
 
+    <!-- Overlay del Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Contenido principal -->
+    <main class="page-section" style="padding: 80px 0 30px 0; background-color: #f9f9f9;">
+        <div class="nosotros-container">
+            <!-- Sección izquierda (Negra) -->
+            <div class="seccion-negra">
+                <h4 class="titulo-nosotros">SOBRE NOSOTROS</h4>
+                <div class="texto-nosotros">
+                    <p>Ferre Tech nació con una misión clara: brindar herramientas de calidad, asesoría técnica y
+                        soluciones prácticas para quienes construyen, reparan y emprenden en nuestra comunidad. Somos
+                        más que una ferretería: somos un espacio de confianza, aprendizaje y progreso local.</p>
+
+                    <p>Desde La Esperanza, Perú, trabajamos cada día para ofrecer productos confiables, atención
+                        personalizada y recursos educativos que empoderen a nuestros clientes. Apoyamos a microempresas,
+                        estudiantes técnicos y familias que buscan mejorar sus espacios con eficiencia y seguridad.</p>
+
+                    <p>Creemos en el poder de la tecnología, la educación y el servicio responsable para transformar
+                        realidades. En Ferre Tech, cada herramienta que vendemos es una oportunidad para construir algo
+                        mejor.</p>
+                </div>
+            </div>
+
+            <!-- Sección derecha (Blanca) -->
+            <div class="seccion-blanca">
+                <img src="./img/hombre.png" alt="Ferretería" class="imagen-nosotros">
+            </div>
+        </div>
+    </main>
 
     <!-- Footer -->
     <footer class="site-footer">
@@ -139,8 +132,7 @@
         </div>
     </footer>
 
-    <!-- Font Awesome para los íconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 
