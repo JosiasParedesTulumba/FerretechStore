@@ -14,7 +14,7 @@ const products = [
         category: "Manual",
         characteristics: "Incluye planos y de estrella",
         price: 35.00,
-        image: "https://www.pngall.com/wp-content/uploads/5/Screwdriver-PNG-Image.png",
+        image: "https://elmachetazo.vtexassets.com/arquivos/ids/722581/Destornillador-Thirfty-Stanley%7C6-Piezas_1.png?v=638448250901700000",
     },
     {
         id: "H003",
@@ -22,7 +22,7 @@ const products = [
         category: "Manual",
         characteristics: "Acero al carbono, mango ergonómico",
         price: 28.00,
-        image: "https://www.freepngimg.com/thumb/pliers/1-2-pliers-png-image.png",
+        image: "https://perusupply.com/247-large_default/alicate-universal-de-6-1000v-mango-confort-grip-truper.jpg",
     },
     {
         id: "H004",
@@ -30,7 +30,7 @@ const products = [
         category: "Medición",
         characteristics: "Compacta, con clip para cinturón",
         price: 15.00,
-        image: "https://www.pngall.com/wp-content/uploads/2016/04/Tape-Measure-PNG.png",
+        image: "https://perusupply.com/256-large_default/wincha-gripper-3-metros-cinta-de-13-mm-resistente-al-impacto-truper.jpg",
     },
     {
         id: "H005",
@@ -39,7 +39,7 @@ const products = [
         image: "https://www.pngall.com/wp-content/uploads/2016/04/Level-PNG.png",
         characteristics: "Cuerpo plástico, burbuja horizontal",
         price: 18.00,
-        image: "https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=400",
+        image: "https://media.adeo.com/media/3187058/media.png",
     },
     {
         id: "H006",
@@ -47,7 +47,7 @@ const products = [
         category: "Eléctrica",
         characteristics: "500W, velocidad variable",
         price: 160.00,
-        image: "https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=400",
+        image: "https://s.alicdn.com/@sc04/kf/H9997e0564a2140dda6a94eb606e4e516K/20V-Cordless-Impact-Drill-Electric-Screwdriver-Set-Variable-Speed-Max-Drilling-Diameter-30mm-Local-US-Warehouse.png_300x300.jpg",
     },
     {
         id: "H007",
@@ -55,7 +55,7 @@ const products = [
         category: "Accesorio",
         characteristics: "Portátil, con compartimentos",
         price: 55.00,
-        image: "https://images.unsplash.com/photo-1585128719114-6dd65d58d55a?w=400",
+        image: "https://dojiw2m9tvv09.cloudfront.net/79550/product/cjh19m8795.png",
     },
     {
         id: "H008",
@@ -63,7 +63,7 @@ const products = [
         category: "Manual",
         characteristics: "Ajustable, acero cromado",
         price: 30.00,
-        image: "https://images.unsplash.com/photo-1588783849485-968c76c5929d?w=400",
+        image: "https://perusupply.com/262-large_default/llave-francesa-cromada-8-confort-grip-truper.jpg",
     },
     {
         id: "H009",
@@ -71,7 +71,7 @@ const products = [
         category: "Manual",
         characteristics: "Medidas métricas",
         price: 22.00,
-        image: "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?w=400",
+        image: "https://www.ferremorales.com.co/wp-content/uploads/2024/07/Juego-De-Llaves-Allen-8-Piezas-HHK14081.png",
     },
     {
         id: "H010",
@@ -79,7 +79,7 @@ const products = [
         category: "Manual",
         characteristics: "Hoja de 20\" para madera",
         price: 40.00,
-        image: "https://images.unsplash.com/photo-1603134554146-7f8c8df6c2a2?w=400",
+        image: "https://bellota.b-cdn.net/CMP4506/PR5146BI4189_EAA_4551_Serrucho_carpintero_con_mango_madera_PEFC_4551_SZ5.png",
     },
     {
         id: "H011",
@@ -87,7 +87,7 @@ const products = [
         category: "Accesorio",
         characteristics: "Para barras de silicona de 7mm",
         price: 25.00,
-        image: "https://images.unsplash.com/photo-1598134439413-b8ac8c7c7f5f?w=400",
+        image: "https://www.sajor.com.mx/assets/uploads/sw_324111.png",
     },
     {
         id: "H012",
@@ -95,7 +95,7 @@ const products = [
         category: "Manual",
         characteristics: "Incluye medidas de 8 a 17mm",
         price: 60.00,
-        image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400",
+        image: "https://pimdatacdn.bahco.com/media/sub670/16a12faa45fae93f.png",
     },
     {
         id: "H013",
@@ -103,7 +103,7 @@ const products = [
         category: "Manual",
         characteristics: "Cuchilla intercambiable",
         price: 12.00,
-        image: "https://images.unsplash.com/photo-1599982892863-df38d7e88f61?w=400",
+        image: "https://pimdatacdn.bahco.com/media/sub609/16a0e789818f1a3f.png",
     },
     {
         id: "H014",
@@ -111,7 +111,7 @@ const products = [
         category: "Medición",
         characteristics: "Cinta de acero reforzado",
         price: 25.00,
-        image: "https://images.unsplash.com/photo-1589939705384-8f4d1b8b5cda?w=400",
+        image: "https://verticeindustrial.mx/wp-content/uploads/2022/01/Fluxometro-Surtek-5-Metros-1.webp",
     },
     {
         id: "H015",
@@ -119,7 +119,7 @@ const products = [
         category: "Accesorio",
         characteristics: "Incluye 20 puntas variadas",
         price: 35.00,
-        image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400",
+        image: "https://www.unionferretera.com/27476-large_default/juego-de-puntas-de-14-bahco-31-piezas.jpg",
     },
     {
         id: "H016",
@@ -127,7 +127,7 @@ const products = [
         category: "Seguridad",
         characteristics: "Algodón con palma de goma",
         price: 10.00,
-        image: "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=400",
+        image: "https://safetystoreperu.vtexassets.com/arquivos/ids/158335/guante-multiflex-mpa102-latex-hi-viz-palma-302020780101-1.png?v=638246341367730000",
     },
     {
         id: "H017",
@@ -135,7 +135,7 @@ const products = [
         category: "Eléctrica",
         characteristics: "Alcance 50m, batería interna",
         price: 45.00,
-        image: "https://images.unsplash.com/photo-1583416750470-965b2707b355?w=400",
+        image: "https://lukat.pe/wp-content/uploads/2022/09/307-linterna-led-recargable-5w-opaluxpng-1647729590-min.png",
     },
     {
         id: "H018",
@@ -143,7 +143,7 @@ const products = [
         category: "Manual",
         characteristics: "Para cortar plástico y papel",
         price: 20.00,
-        image: "https://images.unsplash.com/photo-1589875522759-5bf0ff5b9e7c?w=400",
+        image: "https://pimdatacdn.bahco.com/media/sub1125/18dc07eaddf7b03f.png",
     },
     {
         id: "H019",
@@ -151,7 +151,7 @@ const products = [
         category: "Eléctrica",
         characteristics: "12V, incluye brocas",
         price: 190.00,
-        image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400",
+        image: "https://www.bosch-professional.com/es/es/ocsmedia/322934-54/application-image/1434x828/atornillador-a-bateria-bosch-go-06019h2101.png",
     },
     {
         id: "H020",
@@ -159,7 +159,7 @@ const products = [
         category: "Eléctrica",
         characteristics: "Recargable, 3.6V",
         price: 110.00,
-        image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400",
+        image: "https://bigmarketperu.com/storage/products/nqecRl7Uq7xmVtslDQ9O5b0NcJKcAM3v90NBZClz.png",
     },
     {
         id: "H021",
@@ -167,7 +167,7 @@ const products = [
         category: "Accesorio",
         characteristics: "Incluye tornillos variados",
         price: 35.00,
-        image: "https://images.unsplash.com/photo-1585128719114-6dd65d58d55a?w=400",
+        image: "https://www.manaplas.com/wp-content/uploads/2018/03/041-2982-0-1.png",
     },
     {
         id: "H022",
@@ -175,7 +175,7 @@ const products = [
         category: "Accesorio",
         characteristics: "Acero pintado, antideslizante",
         price: 130.00,
-        image: "https://images.unsplash.com/photo-1581092918484-8313e1f7dea4?w=400",
+        image: "https://ferroveloz.facel.pe/assets/uploads/thumbs/25dcf63eac5aa62c16cde5c07c41c198.png",
     },
     {
         id: "H023",
@@ -183,7 +183,7 @@ const products = [
         category: "Accesorio",
         characteristics: "Diferentes diámetros",
         price: 28.00,
-        image: "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?w=400",
+        image: "https://dojiw2m9tvv09.cloudfront.net/79550/product/x-d-71962-makita82025549.png",
     },
     {
         id: "H024",
@@ -191,7 +191,7 @@ const products = [
         category: "Consumible",
         characteristics: "100 piezas variadas",
         price: 18.00,
-        image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400",
+        image: "https://png.pngtree.com/png-vector/20241021/ourmid/pngtree-pile-of-nails-png-image_14139554.png",
     },
     {
         id: "H025",
@@ -199,7 +199,7 @@ const products = [
         category: "Consumible",
         characteristics: "Incluye pernos y tuercas",
         price: 20.00,
-        image: "https://images.unsplash.com/photo-1581092918484-8313e1f7dea4?w=400",
+        image: "https://cdn.zodiac.nl/media/zodiac-generated/1e2200dd/6f30/4885/831e/530420be7988/standard-rgba.png",
     },
     {
         id: "H026",
@@ -207,7 +207,7 @@ const products = [
         category: "Manual",
         characteristics: "Mango ergonómico, acero",
         price: 70.00,
-        image: "https://images.unsplash.com/photo-1588783849485-968c76c5929d?w=400",
+        image: "https://asset.action.com/image/upload/t_digital_product_image/w_1080/35574378.webp",
     },
     {
         id: "H027",
@@ -215,7 +215,7 @@ const products = [
         category: "Manual",
         characteristics: "Para limpiar óxido o pintura",
         price: 18.00,
-        image: "https://images.unsplash.com/photo-1589875522759-5bf0ff5b9e7c?w=400",
+        image: "https://www.cotecno.cl/wp-content/uploads/2021/07/H-3800.png",
     },
     {
         id: "H028",
@@ -223,7 +223,7 @@ const products = [
         category: "Manual",
         characteristics: "Para masilla y pintura",
         price: 22.00,
-        image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400",
+        image: "https://i0.wp.com/colorcity.com.uy/wp-content/uploads/2024/12/zzeeeeeeeeeeeeeeeeeeeee.png?fit=250%2C250&ssl=1",
     },
     {
         id: "H029",
@@ -231,7 +231,7 @@ const products = [
         category: "Consumible",
         characteristics: "Granos finos y gruesos",
         price: 12.00,
-        image: "https://images.unsplash.com/photo-1589875522759-5bf0ff5b9e7c?w=400",
+        image: "https://lacasadelpintor.pe/cdn/shop/products/lijas-al-agua-super-finas-dewalt-gr1000-gr2500-lija-x-5-uni-D_NQ_NP_613018-MLA31088342361_062019-F-removebg-preview_f657fcfd-1abd-4bcd-a347-95a0f43e27af_1200x1200.png?v=1611166949",
     },
     {
         id: "H030",
@@ -239,7 +239,7 @@ const products = [
         category: "Consumible",
         characteristics: "PVC resistente, 10m",
         price: 8.00,
-        image: "https://images.unsplash.com/photo-1581092918484-8313e1f7dea4?w=400",
+        image: "https://www.perubraun.com/wp-content/uploads/2018/08/Cinta-aislanteweb_Mesa-de-trabajo-1.png",
     },
 ]
 
