@@ -827,8 +827,8 @@ body {
 .footer-upper {
     background-color: #000000;
     color: white;
-    padding: 30px 0 20px 125px; /* Reducido el padding superior a 30px */
-    min-height: 200px;
+    padding: 24px 0 10px 125px; /* menos espacio inferior */
+    min-height: auto; /* evitar espacio negro innecesario */
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -841,6 +841,26 @@ body {
     gap: 10px;
 }
 
+.footer-nav > * {
+    display: flex;
+    align-items: flex-start; /* evita sobreposición en multilínea */
+    height: auto; /* permitir crecer en altura */
+}
+
+/* Columnas para los enlaces del footer */
+.footer-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+    gap: 8px 40px;
+    margin: 0;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .footer-nav-item {
     display: flex;
     align-items: center;
@@ -850,9 +870,24 @@ body {
 .footer-description {
     color: #fff;
     font-size: 14px;
-    margin-left: 100px; /* Aumentado a 50px */
+    margin-left: 0; /* evitar desplazamiento que causaba sobreposición */
+    display: block; /* mantener debajo de "Tienda" */
+    line-height: 1.4;
     font-style: normal;
     transition: color 0.3s ease;
+}
+
+/* Estructura del primer bloque (Tienda + Acceso directo...) en una sola línea */
+.footer-nav-item:first-child {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 0;
+}
+
+/* Desplazar a la derecha el segundo enlace al lado de "Tienda" */
+.footer-secondary-link {
+    margin-left: 127px;
 }
 
 .footer-link {
@@ -869,18 +904,135 @@ body {
 .footer-lower {
     background-color: #666666;
     color: #fff;
-    padding: 10px 20px;
-    min-height: 40px;
-    width: 100%;
+    padding: 20px 20px;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 15px;
 }
 
 .footer-lower p {
-    margin: 0 0 0 125px; /* Aumentado el margen izquierdo a 40px */
+    margin: 0;
     font-size: 12px;
     color: #fff;
-    text-align: left;
+    text-align: center;
+}
+
+/* Estilos para los enlaces de redes sociales */
+.social-links {
+    display: flex;
+    gap: 2px;
+    margin-left: 8px;
+    align-items: center;
+    transform: scale(0.7);
+    transform-origin: left center;
+}
+
+.social-link {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.social-link:hover {
+    background-color: #ff6b00;
+    transform: translateY(-1px);
+    color: white;
+}
+
+.social-link i {
+    font-size: 7px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ajustes para el menú de navegación del footer */
+.footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Estilo base para los ítems del menú */
+.footer-nav > * {
+    margin: 0;
+    padding: 0;
+    height: auto; /* permitir varias líneas */
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Contenedor de contacto con iconos */
+.footer-nav > .footer-nav-item:last-child {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: auto;
+}
+
+/* Ajuste para los enlaces del menú */
+.footer-link {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* Ajuste específico para los iconos sociales */
+.social-links {
+    display: inline-flex;
+    align-items: flex-start;
+    margin-left: 520px; /* Margen incrementado significativamente */
+    position: relative;
+    top: -6px;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    margin: 0 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.social-link i {
+    font-size: 7px;
+    color: #fff;
+    display: block;
+    line-height: 1;
+    position: relative;
+    top: 0;
+}
+
+.social-link:hover {
+    background-color: #ff6b00;
+    transform: translateY(-1px);
+}
+
+.footer-lower p {
+    margin: 0;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
 }
 
 /* Contenedor para centrar el contenido */

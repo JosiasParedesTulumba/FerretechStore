@@ -6,7 +6,7 @@ const products = [
         category: "Manual",
         characteristics: "Mango de madera, cabeza de acero",
         price: 25.00,
-        image: "https://images.unsplash.com/photo-1587226960947-284a04cbb9e0?w=400",
+        image: "https://png.pngtree.com/png-clipart/20220110/original/pngtree-home-decoration-tools-hammer-illustration-png-image_7070690.png",
     },
     {
         id: "H002",
@@ -14,7 +14,7 @@ const products = [
         category: "Manual",
         characteristics: "Incluye planos y de estrella",
         price: 35.00,
-        image: "https://images.unsplash.com/photo-1596023575375-44e1d6c6e005?w=400",
+        image: "https://www.pngall.com/wp-content/uploads/5/Screwdriver-PNG-Image.png",
     },
     {
         id: "H003",
@@ -22,7 +22,7 @@ const products = [
         category: "Manual",
         characteristics: "Acero al carbono, mango ergonómico",
         price: 28.00,
-        image: "https://images.unsplash.com/photo-1599009426262-07f55d4f5e5f?w=400",
+        image: "https://www.freepngimg.com/thumb/pliers/1-2-pliers-png-image.png",
     },
     {
         id: "H004",
@@ -30,12 +30,13 @@ const products = [
         category: "Medición",
         characteristics: "Compacta, con clip para cinturón",
         price: 15.00,
-        image: "https://images.unsplash.com/photo-1589939705384-8f4d1b8b5cda?w=400",
+        image: "https://www.pngall.com/wp-content/uploads/2016/04/Tape-Measure-PNG.png",
     },
     {
         id: "H005",
         name: "Nivel de burbuja 20cm",
         category: "Medición",
+        image: "https://www.pngall.com/wp-content/uploads/2016/04/Level-PNG.png",
         characteristics: "Cuerpo plástico, burbuja horizontal",
         price: 18.00,
         image: "https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=400",
