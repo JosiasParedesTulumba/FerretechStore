@@ -246,6 +246,82 @@ const products = [
 // Cart state
 let cart = []
 
+/* -----------------------------
+   Google Analytics helper
+   - trackEvent(name, params): wrapper around gtag
+   - ecommerce helpers: view_item_list, view_item, add_to_cart, remove_from_cart, begin_checkout, purchase
+   ----------------------------- */
+function trackEvent(name, params) {
+    if (typeof gtag === 'function') {
+        try {
+            gtag('event', name, params || {});
+        } catch (e) {
+            console.warn('gtag error:', e, name, params);
+        }
+    } else {
+        // gtag not yet loaded; keep a console hint for debugging
+        console.log('gtag not ready, would track:', name, params);
+    }
+}
+
+function formatItemsForGA(items) {
+    return items.map(i => ({
+        item_id: i.id,
+        item_name: i.name,
+        item_category: i.category || 'general',
+        price: i.price,
+        quantity: i.quantity || 1,
+    }));
+}
+
+function trackViewItemList(items) {
+    trackEvent('view_item_list', {
+        currency: 'PEN',
+        items: items.map(p => ({ item_id: p.id, item_name: p.name, price: p.price }))
+    });
+}
+
+function trackViewItem(product) {
+    trackEvent('view_item', {
+        currency: 'PEN',
+        value: product.price || 0,
+        items: [ { item_id: product.id, item_name: product.name, item_category: product.category, price: product.price } ]
+    });
+}
+
+function trackAddToCart(product) {
+    trackEvent('add_to_cart', {
+        currency: 'PEN',
+        value: product.price || 0,
+        items: [ { item_id: product.id, item_name: product.name, item_category: product.category, price: product.price, quantity: 1 } ]
+    });
+}
+
+function trackRemoveFromCart(product) {
+    trackEvent('remove_from_cart', {
+        currency: 'PEN',
+        value: product.price || 0,
+        items: [ { item_id: product.id, item_name: product.name, item_category: product.category, price: product.price, quantity: 1 } ]
+    });
+}
+
+function trackBeginCheckout(cartState) {
+    trackEvent('begin_checkout', {
+        currency: 'PEN',
+        value: cartState.total || 0,
+        items: formatItemsForGA(cartState.items || [])
+    });
+}
+
+function trackPurchase(purchase) {
+    trackEvent('purchase', {
+        transaction_id: purchase.id,
+        currency: purchase.currency || 'PEN',
+        value: purchase.total,
+        items: formatItemsForGA(purchase.items || [])
+    });
+}
+
 // Pagination variables
 let currentPage = 1;
 const productsPerPage = 10;
@@ -288,6 +364,12 @@ function displayProducts() {
         `;
         productsGrid.appendChild(productCard);
     });
+    // Track product list view for analytics
+    try {
+        trackViewItemList(paginatedProducts);
+    } catch (e) {
+        console.warn('trackViewItemList error', e);
+    }
     
     updatePaginationButtons();
 }
@@ -369,6 +451,12 @@ function addToCart(productId) {
 
     updateCart()
     toggleCart(true)
+    // Analytics: add_to_cart
+    try {
+        trackAddToCart(product);
+    } catch (e) {
+        console.warn('trackAddToCart error', e);
+    }
 }
 
 // Update cart display
@@ -394,11 +482,11 @@ function updateCart() {
                     <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">$${item.price.toFixed(2)}</div>
                     <div class="cart-item-quantity">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
                         <span class="quantity-value">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
                     </div>
-                    <button class="remove-item" onclick="removeFromCart(${item.id})">Eliminar</button>
+                    <button class="remove-item" onclick="removeFromCart('${item.id}')">Eliminar</button>
                 </div>
             </div>
         `,
@@ -415,10 +503,26 @@ function updateCart() {
 function updateQuantity(productId, change) {
     const item = cart.find((item) => item.id === productId)
     if (item) {
+        const prevQty = item.quantity
         item.quantity += change
         if (item.quantity <= 0) {
+            // Track removal of remaining quantity
+            try {
+                const prod = products.find(p => p.id === productId) || item
+                trackRemoveFromCart(prod)
+            } catch (e) {
+                console.warn('trackRemoveFromCart error', e)
+            }
             removeFromCart(productId)
         } else {
+            // If increased -> add_to_cart event; if decreased -> remove_from_cart event
+            try {
+                const prod = products.find(p => p.id === productId) || item
+                if (change > 0) trackAddToCart(prod)
+                else if (change < 0) trackRemoveFromCart(prod)
+            } catch (e) {
+                console.warn('track quantity change error', e)
+            }
             updateCart()
         }
     }
@@ -426,8 +530,18 @@ function updateQuantity(productId, change) {
 
 // Remove from cart
 function removeFromCart(productId) {
+    // Find removed product for analytics
+    const removed = cart.find(i => i.id === productId)
     cart = cart.filter((item) => item.id !== productId)
     updateCart()
+    if (removed) {
+        try {
+            const prod = products.find(p => p.id === productId) || removed
+            trackRemoveFromCart(prod)
+        } catch (e) {
+            console.warn('trackRemoveFromCart error', e)
+        }
+    }
 }
 
 // Toggle cart sidebar
@@ -438,9 +552,13 @@ function toggleCart(forceOpen = false) {
     if (forceOpen) {
         cartSidebar.classList.add("active")
         cartOverlay.classList.add("active")
+        try { trackEvent('view_cart'); } catch(e){console.warn('view_cart',e)}
     } else {
         cartSidebar.classList.toggle("active")
         cartOverlay.classList.toggle("active")
+        if (cartSidebar.classList.contains('active')) {
+            try { trackEvent('view_cart'); } catch(e){console.warn('view_cart',e)}
+        }
     }
 }
 
@@ -484,6 +602,12 @@ function showSection(sectionId, event) {
     // Si es la sección de inicio, asegurarse de que los productos se muestren
     if (sectionId === 'inicio') {
         initProducts();
+    }
+    // Analytics: track virtual page view for SPA-style navigation
+    try {
+        trackEvent('page_view', { page_path: '/' + sectionId });
+    } catch (e) {
+        console.warn('track page_view error', e);
     }
 }
 
@@ -530,4 +654,62 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleSidebar();
         });
     }
+
+    // Track initial page_view
+    try {
+        trackEvent('page_view', { page_path: window.location.pathname });
+    } catch (e) {
+        console.warn('track page_view init', e);
+    }
+
+    // Hook checkout button to track begin_checkout and (demo) purchase
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Build a simple cart snapshot
+            const cartSnapshot = {
+                items: cart.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity })),
+                total: cart.reduce((s, it) => s + it.price * it.quantity, 0)
+            };
+            try {
+                trackBeginCheckout(cartSnapshot);
+            } catch (err) {
+                console.warn('trackBeginCheckout error', err);
+            }
+
+            // For demo: simulate immediate purchase (in real flow you'd call this after payment confirmation)
+            const purchase = {
+                id: 'T' + Date.now(),
+                currency: 'PEN',
+                total: cartSnapshot.total,
+                items: cartSnapshot.items
+            };
+            try {
+                trackPurchase(purchase);
+            } catch (err) {
+                console.warn('trackPurchase error', err);
+            }
+
+            // Clear cart after simulated purchase
+            cart = [];
+            updateCart();
+            toggleCart(false);
+            alert('Gracias por la compra (simulada). Eventos enviados a Analytics.');
+        });
+    }
+
+    // Outbound link tracking
+    document.addEventListener('click', (e) => {
+        const a = e.target.closest && e.target.closest('a');
+        if (!a || !a.href) return;
+        try {
+            const linkUrl = new URL(a.href, window.location.href);
+            if (linkUrl.hostname !== window.location.hostname) {
+                trackEvent('click_outbound', { link_url: linkUrl.href });
+            }
+        } catch (err) {
+            // ignore invalid URLs
+        }
+    });
 });
