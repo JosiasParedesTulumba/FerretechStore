@@ -250,17 +250,10 @@ let cart = []
 //    ----------------------------- */
 function trackEvent(eventName, params = {}) {
     if (typeof gtag === 'function') {
-        // Añadir información de la sesión
-        const enhancedParams = {
-            ...params,
-            page_title: document.title,
-            page_location: window.location.href,
-            page_path: window.location.pathname,
-            send_to: 'G-H930MYG9WH'
-        };
-        
-        console.log(`[GA4] Event: ${eventName}`, enhancedParams);
-        gtag('event', eventName, enhancedParams);
+        // GA4 captura automáticamente page_title, page_location, page_path
+        // No es necesario agregarlos manualmente
+        console.log(`[GA4] Event: ${eventName}`, params);
+        gtag('event', eventName, params);
     }
 }
 
@@ -403,26 +396,26 @@ function trackPurchase(transaction) {
         return sum + (parseFloat(item.price || 0) * (parseInt(item.quantity) || 1));
     }, 0);
 
+    // Formato correcto para Enhanced E-commerce de GA4
+    const formattedItems = items.map(item => ({
+        item_id: item.id.toString(),
+        item_name: item.name,
+        item_category: item.category || 'Sin categoría',
+        price: parseFloat(item.price), // Número, no string
+        quantity: parseInt(item.quantity) || 1,
+        item_brand: 'FerreTech'
+    }));
+
     trackEvent('purchase', {
         transaction_id: transaction.id.toString(),
-        value: totalValue.toFixed(2),
-        tax: parseFloat(transaction.tax || 0).toFixed(2),
-        shipping: parseFloat(transaction.shipping || 0).toFixed(2),
+        value: parseFloat(totalValue.toFixed(2)), // Número, no string
+        tax: parseFloat(transaction.tax || 0),
+        shipping: parseFloat(transaction.shipping || 0),
         currency: 'PEN',
         coupon: transaction.coupon || '',
-        payment_method: transaction.payment_method || 'No especificado',
+        payment_type: transaction.payment_method || 'No especificado',
         shipping_tier: transaction.shipping_tier || 'Estándar',
-        items: items.map(item => ({
-            item_id: item.id.toString(),
-            item_name: item.name,
-            item_category: item.category || 'Sin categoría',
-            price: parseFloat(item.price).toFixed(2),
-            quantity: parseInt(item.quantity) || 1,
-            item_brand: 'FerreTech',
-            coupon: item.coupon || '',
-            discount: parseFloat(item.discount || 0).toFixed(2),
-            item_variant: item.variant || 'standard'
-        }))
+        items: formattedItems
     });
 }
 
