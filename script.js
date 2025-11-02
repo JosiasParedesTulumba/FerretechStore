@@ -36,7 +36,6 @@ const products = [
         id: "H005",
         name: "Nivel de burbuja 20cm",
         category: "Medición",
-        image: "https://www.pngall.com/wp-content/uploads/2016/04/Level-PNG.png",
         characteristics: "Cuerpo plástico, burbuja horizontal",
         price: 18.00,
         image: "https://media.adeo.com/media/3187058/media.png",
