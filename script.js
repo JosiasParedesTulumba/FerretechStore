@@ -246,79 +246,190 @@ const products = [
 // Cart state
 let cart = []
 
-/* -----------------------------
-   Google Analytics helper
-   - trackEvent(name, params): wrapper around gtag
-   - ecommerce helpers: view_item_list, view_item, add_to_cart, remove_from_cart, begin_checkout, purchase
-   ----------------------------- */
-function trackEvent(name, params) {
+// -----------------------------
+//    Google Analytics 4 - Enhanced E-commerce Tracking
+//    ----------------------------- */
+function trackEvent(eventName, params = {}) {
     if (typeof gtag === 'function') {
-        try {
-            gtag('event', name, params || {});
-        } catch (e) {
-            console.warn('gtag error:', e, name, params);
-        }
-    } else {
-        // gtag not yet loaded; keep a console hint for debugging
-        console.log('gtag not ready, would track:', name, params);
+        // Añadir información de la sesión
+        const enhancedParams = {
+            ...params,
+            page_title: document.title,
+            page_location: window.location.href,
+            page_path: window.location.pathname,
+            send_to: 'G-H930MYG9WH'
+        };
+        
+        console.log(`[GA4] Event: ${eventName}`, enhancedParams);
+        gtag('event', eventName, enhancedParams);
     }
 }
 
+// Formatea los productos para el envío a GA4
 function formatItemsForGA(items) {
-    return items.map(i => ({
-        item_id: i.id,
-        item_name: i.name,
-        item_category: i.category || 'general',
-        price: i.price,
-        quantity: i.quantity || 1,
+    return items.map(item => ({
+        item_id: item.id.toString(),
+        item_name: item.name,
+        item_category: item.category || 'Sin categoría',
+        price: parseFloat(item.price).toFixed(2),
+        quantity: parseInt(item.quantity) || 1,
+        item_brand: 'FerreTech',
+        item_variant: item.variant || 'standard',
+        currency: 'MXN',
+        item_list_name: 'default',
+        item_list_id: 'default',
+        index: 0,
+        discount: 0.00
     }));
 }
 
-function trackViewItemList(items) {
+// Seguimiento de visualización de lista de productos
+function trackViewItemList(items, listName = 'default', listId = 'default') {
     trackEvent('view_item_list', {
-        currency: 'PEN',
-        items: items.map(p => ({ item_id: p.id, item_name: p.name, price: p.price }))
+        item_list_id: listId,
+        item_list_name: listName,
+        items: formatItemsForGA(items)
     });
 }
 
+// Seguimiento de visualización de producto
 function trackViewItem(product) {
     trackEvent('view_item', {
-        currency: 'PEN',
-        value: product.price || 0,
-        items: [ { item_id: product.id, item_name: product.name, item_category: product.category, price: product.price } ]
+        currency: 'MXN',
+        value: parseFloat(product.price).toFixed(2),
+        items: [{
+            item_id: product.id.toString(),
+            item_name: product.name,
+            item_category: product.category || 'Sin categoría',
+            price: parseFloat(product.price).toFixed(2),
+            quantity: 1,
+            item_brand: 'FerreTech'
+        }]
     });
 }
 
-function trackAddToCart(product) {
+// Seguimiento de producto añadido al carrito
+function trackAddToCart(product, quantity = 1) {
     trackEvent('add_to_cart', {
-        currency: 'PEN',
-        value: product.price || 0,
-        items: [ { item_id: product.id, item_name: product.name, item_category: product.category, price: product.price, quantity: 1 } ]
+        currency: 'MXN',
+        value: (parseFloat(product.price) * parseInt(quantity)).toFixed(2),
+        items: [{
+            item_id: product.id.toString(),
+            item_name: product.name,
+            item_category: product.category || 'Sin categoría',
+            price: parseFloat(product.price).toFixed(2),
+            quantity: parseInt(quantity) || 1,
+            item_brand: 'FerreTech'
+        }]
     });
 }
 
+// Seguimiento de producto eliminado del carrito
 function trackRemoveFromCart(product) {
     trackEvent('remove_from_cart', {
-        currency: 'PEN',
-        value: product.price || 0,
-        items: [ { item_id: product.id, item_name: product.name, item_category: product.category, price: product.price, quantity: 1 } ]
+        currency: 'MXN',
+        value: parseFloat(product.price).toFixed(2),
+        items: [{
+            item_id: product.id.toString(),
+            item_name: product.name,
+            item_category: product.category || 'Sin categoría',
+            price: parseFloat(product.price).toFixed(2),
+            quantity: 1,
+            item_brand: 'FerreTech'
+        }]
     });
 }
 
-function trackBeginCheckout(cartState) {
+// Seguimiento de inicio de checkout
+function trackBeginCheckout(cartItems) {
+    const items = cartItems.map(item => ({
+        item_id: item.id.toString(),
+        item_name: item.name,
+        item_category: item.category || 'Sin categoría',
+        price: parseFloat(item.price).toFixed(2),
+        quantity: parseInt(item.quantity) || 1,
+        item_brand: 'FerreTech'
+    }));
+
+    const totalValue = cartItems.reduce((sum, item) => {
+        return sum + (parseFloat(item.price) * (parseInt(item.quantity) || 1));
+    }, 0);
+
     trackEvent('begin_checkout', {
-        currency: 'PEN',
-        value: cartState.total || 0,
-        items: formatItemsForGA(cartState.items || [])
+        currency: 'MXN',
+        value: totalValue.toFixed(2),
+        coupon: '',
+        items: items
     });
 }
 
-function trackPurchase(purchase) {
+// Seguimiento de compra completada
+function trackPurchase(transaction) {
+    if (!transaction || !transaction.id) {
+        console.error('Transaction ID is required for purchase tracking');
+        return;
+    }
+
+    const items = transaction.items || [];
+    const totalValue = items.reduce((sum, item) => {
+        return sum + (parseFloat(item.price || 0) * (parseInt(item.quantity) || 1));
+    }, 0);
+
     trackEvent('purchase', {
-        transaction_id: purchase.id,
-        currency: purchase.currency || 'PEN',
-        value: purchase.total,
-        items: formatItemsForGA(purchase.items || [])
+        transaction_id: transaction.id.toString(),
+        value: totalValue.toFixed(2),
+        tax: parseFloat(transaction.tax || 0).toFixed(2),
+        shipping: parseFloat(transaction.shipping || 0).toFixed(2),
+        currency: 'MXN',
+        coupon: transaction.coupon || '',
+        payment_method: transaction.payment_method || 'No especificado',
+        shipping_tier: transaction.shipping_tier || 'Estándar',
+        items: items.map(item => ({
+            item_id: item.id.toString(),
+            item_name: item.name,
+            item_category: item.category || 'Sin categoría',
+            price: parseFloat(item.price).toFixed(2),
+            quantity: parseInt(item.quantity) || 1,
+            item_brand: 'FerreTech',
+            coupon: item.coupon || '',
+            discount: parseFloat(item.discount || 0).toFixed(2),
+            item_variant: item.variant || 'standard'
+        }))
+    });
+}
+
+// Seguimiento de búsqueda de productos
+function trackSearch(searchTerm) {
+    trackEvent('search', {
+        search_term: searchTerm
+    });
+}
+
+// Seguimiento de registro
+function trackSignUp(method = 'email') {
+    trackEvent('sign_up', {
+        method: method
+    });
+}
+
+// Seguimiento de inicio de sesión
+function trackLogin(method = 'email') {
+    trackEvent('login', {
+        method: method
+    });
+}
+
+// Seguimiento de contacto
+function trackContact() {
+    trackEvent('contact');
+}
+
+// Seguimiento de compartir
+function trackShare(method, contentType, itemId) {
+    trackEvent('share', {
+        method: method,
+        content_type: contentType,
+        item_id: itemId
     });
 }
 
