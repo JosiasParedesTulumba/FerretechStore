@@ -341,26 +341,55 @@ function trackRemoveFromCart(product) {
 }
 
 // Seguimiento de inicio de checkout
-function trackBeginCheckout(cartItems) {
-    const items = cartItems.map(item => ({
-        item_id: item.id.toString(),
-        item_name: item.name,
-        item_category: item.category || 'Sin categoría',
-        price: parseFloat(item.price).toFixed(2),
-        quantity: parseInt(item.quantity) || 1,
-        item_brand: 'FerreTech'
-    }));
+function trackBeginCheckout(cartData) {
+    try {
+        // Asegurarse de que tenemos un array de items
+        let items = [];
+        let totalValue = 0;
+        
+        // Manejar diferentes formatos de entrada
+        if (Array.isArray(cartData)) {
+            // Si es un array de items
+            items = cartData.map(item => ({
+                item_id: item.id ? item.id.toString() : 'unknown',
+                item_name: item.name || 'Producto sin nombre',
+                item_category: item.category || 'Sin categoría',
+                price: parseFloat(item.price || 0).toFixed(2),
+                quantity: parseInt(item.quantity) || 1,
+                item_brand: 'FerreTech'
+            }));
+            
+            totalValue = cartData.reduce((sum, item) => {
+                return sum + (parseFloat(item.price || 0) * (parseInt(item.quantity) || 1));
+            }, 0);
+        } else if (cartData && cartData.items && Array.isArray(cartData.items)) {
+            // Si es un objeto con propiedad 'items'
+            items = cartData.items.map(item => ({
+                item_id: item.id ? item.id.toString() : 'unknown',
+                item_name: item.name || 'Producto sin nombre',
+                item_category: item.category || 'Sin categoría',
+                price: parseFloat(item.price || 0).toFixed(2),
+                quantity: parseInt(item.quantity) || 1,
+                item_brand: 'FerreTech'
+            }));
+            
+            totalValue = cartData.total || cartData.items.reduce((sum, item) => {
+                return sum + (parseFloat(item.price || 0) * (parseInt(item.quantity) || 1));
+            }, 0);
+        } else {
+            console.warn('Formato de carrito no reconocido:', cartData);
+            return; // No hacer seguimiento si no hay datos válidos
+        }
 
-    const totalValue = cartItems.reduce((sum, item) => {
-        return sum + (parseFloat(item.price) * (parseInt(item.quantity) || 1));
-    }, 0);
-
-    trackEvent('begin_checkout', {
-        currency: 'MXN',
-        value: totalValue.toFixed(2),
-        coupon: '',
-        items: items
-    });
+        trackEvent('begin_checkout', {
+            currency: 'MXN',
+            value: totalValue.toFixed(2),
+            coupon: '',
+            items: items
+        });
+    } catch (error) {
+        console.error('Error en trackBeginCheckout:', error);
+    }
 }
 
 // Seguimiento de compra completada
@@ -778,35 +807,54 @@ document.addEventListener("DOMContentLoaded", () => {
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            // Build a simple cart snapshot
-            const cartSnapshot = {
-                items: cart.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity })),
-                total: cart.reduce((s, it) => s + it.price * it.quantity, 0)
-            };
             try {
-                trackBeginCheckout(cartSnapshot);
-            } catch (err) {
-                console.warn('trackBeginCheckout error', err);
+                // Preparar los datos del carrito para el seguimiento
+                const cartItems = cart.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    category: item.category || 'Sin categoría'
+                }));
+                
+                // Enviar evento de inicio de checkout
+                trackBeginCheckout(cartItems);
+                
+                // Simular una compra exitosa después de un breve retraso
+                setTimeout(() => {
+                    const transactionId = 'T' + Date.now();
+                    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                    
+                    const purchase = {
+                        id: transactionId,
+                        currency: 'MXN',
+                        total: total,
+                        tax: (total * 0.16).toFixed(2), // 16% de IVA
+                        shipping: 0.00,
+                        items: cartItems.map(item => ({
+                            ...item,
+                            price: parseFloat(item.price).toFixed(2),
+                            quantity: parseInt(item.quantity) || 1
+                        }))
+                    };
+                    
+                    // Enviar evento de compra
+                    trackPurchase(purchase);
+                    
+                    // Limpiar el carrito después de la compra
+                    cart = [];
+                    updateCart();
+                    toggleCart(false);
+                    
+                    // Mostrar mensaje de confirmación
+                    alert('¡Compra completada con éxito! ID de transacción: ' + transactionId);
+                    
+                }, 1000); // Pequeño retraso para simular el proceso de pago
+                
+            } catch (error) {
+                console.error('Error durante el proceso de compra:', error);
+                alert('Ocurrió un error al procesar la compra. Por favor, inténtalo de nuevo.');
             }
-
-            // For demo: simulate immediate purchase (in real flow you'd call this after payment confirmation)
-            const purchase = {
-                id: 'T' + Date.now(),
-                currency: 'PEN',
-                total: cartSnapshot.total,
-                items: cartSnapshot.items
-            };
-            try {
-                trackPurchase(purchase);
-            } catch (err) {
-                console.warn('trackPurchase error', err);
-            }
-
-            // Clear cart after simulated purchase
-            cart = [];
-            updateCart();
-            toggleCart(false);
-            alert('Gracias por la compra (simulada). Eventos enviados a Analytics.');
         });
     }
 
