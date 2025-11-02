@@ -275,7 +275,7 @@ function formatItemsForGA(items) {
         quantity: parseInt(item.quantity) || 1,
         item_brand: 'FerreTech',
         item_variant: item.variant || 'standard',
-        currency: 'MXN',
+        currency: 'PEN',
         item_list_name: 'default',
         item_list_id: 'default',
         index: 0,
@@ -295,7 +295,7 @@ function trackViewItemList(items, listName = 'default', listId = 'default') {
 // Seguimiento de visualización de producto
 function trackViewItem(product) {
     trackEvent('view_item', {
-        currency: 'MXN',
+        currency: 'PEN',
         value: parseFloat(product.price).toFixed(2),
         items: [{
             item_id: product.id.toString(),
@@ -311,7 +311,7 @@ function trackViewItem(product) {
 // Seguimiento de producto añadido al carrito
 function trackAddToCart(product, quantity = 1) {
     trackEvent('add_to_cart', {
-        currency: 'MXN',
+        currency: 'PEN',
         value: (parseFloat(product.price) * parseInt(quantity)).toFixed(2),
         items: [{
             item_id: product.id.toString(),
@@ -327,7 +327,7 @@ function trackAddToCart(product, quantity = 1) {
 // Seguimiento de producto eliminado del carrito
 function trackRemoveFromCart(product) {
     trackEvent('remove_from_cart', {
-        currency: 'MXN',
+        currency: 'PEN',
         value: parseFloat(product.price).toFixed(2),
         items: [{
             item_id: product.id.toString(),
@@ -382,7 +382,7 @@ function trackBeginCheckout(cartData) {
         }
 
         trackEvent('begin_checkout', {
-            currency: 'MXN',
+            currency: 'PEN',
             value: totalValue.toFixed(2),
             coupon: '',
             items: items
@@ -409,7 +409,7 @@ function trackPurchase(transaction) {
         value: totalValue.toFixed(2),
         tax: parseFloat(transaction.tax || 0).toFixed(2),
         shipping: parseFloat(transaction.shipping || 0).toFixed(2),
-        currency: 'MXN',
+        currency: 'PEN',
         coupon: transaction.coupon || '',
         payment_method: transaction.payment_method || 'No especificado',
         shipping_tier: transaction.shipping_tier || 'Estándar',
@@ -827,13 +827,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     const purchase = {
                         id: transactionId,
-                        currency: 'MXN',
+                        currency: 'PEN',
                         total: total,
-                        tax: (total * 0.16).toFixed(2), // 16% de IVA
+                        tax: parseFloat((total * 0.18).toFixed(2)), // 18% de IGV (Perú)
                         shipping: 0.00,
+                        payment_method: 'Simulado',
+                        shipping_tier: 'Gratis',
                         items: cartItems.map(item => ({
-                            ...item,
-                            price: parseFloat(item.price).toFixed(2),
+                            id: item.id,
+                            name: item.name,
+                            category: item.category || 'Sin categoría',
+                            price: parseFloat(item.price),
                             quantity: parseInt(item.quantity) || 1
                         }))
                     };

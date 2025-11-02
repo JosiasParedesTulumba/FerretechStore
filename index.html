@@ -15,21 +15,16 @@
 
         // Configuración mejorada de GA4
         gtag('config', 'G-H930MYG9WH', {
-            'debug_mode': true,
-            'send_page_view': true,
-            'currency': 'MXN',
-            'page_title': document.title,
-            'page_location': window.location.href,
-            'page_path': window.location.pathname,
-            'user_properties': {
-                'user_id': 'anonymous_user_' + Math.random().toString(36).substring(2, 15)
-            }
+            'debug_mode': false, // Cambiar a true solo para debugging local
+            'currency': 'PEN', // Moneda: Soles Peruanos
+            'send_page_view': true
         });
 
-        // Configuración de enlace mejorada
-        gtag('set', 'linker', {
-            'domains': ['tutienda.com'] // Reemplaza con tu dominio real
-        });
+        // Configuración de enlace mejorada (útil para cross-domain tracking)
+        // Descomenta y actualiza con tu dominio real cuando lo tengas:
+        // gtag('set', 'linker', {
+        //     'domains': ['tudominio.com', 'www.tudominio.com']
+        // });
 
         // Configuración de publicidad (opcional, descomenta si es necesario)
         // gtag('set', 'allow_ad_personalization_signals', true);
