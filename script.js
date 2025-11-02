@@ -342,37 +342,25 @@ function trackRemoveFromCart(product) {
 
 // Seguimiento de inicio de checkout
 function trackBeginCheckout(cartItems) {
-    try {
-        // Asegurarse de que cartItems sea un array
-        const itemsArray = Array.isArray(cartItems) ? cartItems : [];
-        
-        if (itemsArray.length === 0) {
-            console.warn('No hay productos en el carrito para rastrear el checkout');
-            return;
-        }
+    const items = cartItems.map(item => ({
+        item_id: item.id.toString(),
+        item_name: item.name,
+        item_category: item.category || 'Sin categoría',
+        price: parseFloat(item.price).toFixed(2),
+        quantity: parseInt(item.quantity) || 1,
+        item_brand: 'FerreTech'
+    }));
 
-        const items = itemsArray.map(item => ({
-            item_id: item.id ? item.id.toString() : 'unknown',
-            item_name: item.name || 'Producto sin nombre',
-            item_category: item.category || 'Sin categoría',
-            price: parseFloat(item.price || 0).toFixed(2),
-            quantity: parseInt(item.quantity) || 1,
-            item_brand: 'FerreTech'
-        }));
+    const totalValue = cartItems.reduce((sum, item) => {
+        return sum + (parseFloat(item.price) * (parseInt(item.quantity) || 1));
+    }, 0);
 
-        const totalValue = itemsArray.reduce((sum, item) => {
-            return sum + (parseFloat(item.price || 0) * (parseInt(item.quantity) || 1));
-        }, 0);
-
-        trackEvent('begin_checkout', {
-            currency: 'MXN',
-            value: totalValue.toFixed(2),
-            coupon: '',
-            items: items
-        });
-    } catch (error) {
-        console.error('Error en trackBeginCheckout:', error);
-    }
+    trackEvent('begin_checkout', {
+        currency: 'MXN',
+        value: totalValue.toFixed(2),
+        coupon: '',
+        items: items
+    });
 }
 
 // Seguimiento de compra completada
@@ -477,27 +465,14 @@ function displayProducts() {
                 <img src="${product.image}" alt="${product.name}" class="product-image">
             </div>
             <div class="product-info">
-                <h3>${product.name}</h3>
-                <p class="product-category">${product.category}</p>
-                <p class="product-characteristics">${product.characteristics}</p>
-                <div class="product-footer">
-                    <span class="product-price">$${product.price.toFixed(2)}</span>
-                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('${product.id}')">
-                        <i class="fas fa-shopping-cart"></i> Agregar
-                    </button>
-                </div>
+                <div class="product-category">${product.category}</div>
+                <h3 class="product-name">${product.name}</h3>
+                <div class="product-price">$${product.price.toFixed(2)}</div>
+                <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">
+                    AGREGAR AL CARRITO
+                </button>
             </div>
         `;
-        
-        // Añadir evento de clic para rastrear la visualización del producto
-        productCard.addEventListener('click', () => {
-            console.log('Producto clickeado:', product.name); // Para depuración
-            trackViewItem(product);
-            
-            // Opcional: Redirigir a una página de detalles del producto
-            // window.location.href = `producto.html?id=${product.id}`;
-        });
-        
         productsGrid.appendChild(productCard);
     });
     // Track product list view for analytics
